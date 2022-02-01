@@ -1,4 +1,4 @@
-package com.example.pine
+package com.maximapps.pine
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

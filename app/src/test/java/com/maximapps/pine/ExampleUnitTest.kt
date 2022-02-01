@@ -1,4 +1,4 @@
-package com.example.pine
+package com.maximapps.pine
 
 import org.junit.Test
 

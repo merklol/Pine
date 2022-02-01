@@ -1,4 +1,4 @@
-package com.example.pine.ui.theme
+package com.maximapps.pine.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

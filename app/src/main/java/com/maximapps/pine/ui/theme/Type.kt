@@ -1,4 +1,4 @@
-package com.example.pine.ui.theme
+package com.maximapps.pine.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
