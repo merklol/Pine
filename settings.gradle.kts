@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Pine"
 include(":app")
+include(":features:main")
+include(":features:settings")
+include(":features:statistics")
