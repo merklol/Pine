@@ -8,6 +8,7 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
     }
@@ -17,3 +18,5 @@ include(":app")
 include(":features:main")
 include(":features:settings")
 include(":features:statistics")
+include(":sample-apps:main-sample")
+include(":core-ui")

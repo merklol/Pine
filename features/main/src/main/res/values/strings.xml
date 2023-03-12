@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_btn">Start</string>
+    <string name="settings_btn">Settings</string>
+    <string name="statistics_btn">Statistics</string>
+    <string name="current_work_msg">Work #%s</string>
+</resources>
