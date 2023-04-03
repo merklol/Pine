@@ -19,7 +19,6 @@ include(
     ":features:main",
     ":features:settings",
     ":features:statistics",
-    ":sample-apps:main-sample",
     ":core-ui",
     ":navigation"
 )
