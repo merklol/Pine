@@ -1,4 +1,4 @@
-package com.maximapps.pine.ui
+package com.maximapps.settings.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme

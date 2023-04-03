@@ -14,6 +14,13 @@ fun slideInTransition() = AccompanistEnterTransition {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
+fun slideDownTransition() = AccompanistEnterTransition {
+    it.slideIntoContainer(
+        AnimatedContentScope.SlideDirection.Down, animationSpec = tween(1000)
+    )
+}
+
+@OptIn(ExperimentalAnimationApi::class)
 fun slideOutTransition() = AccompanistExitTransition {
     it.slideOutOfContainer(
         AnimatedContentScope.SlideDirection.Down, animationSpec = tween(1000)
