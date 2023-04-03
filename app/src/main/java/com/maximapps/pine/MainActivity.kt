@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.maximapps.coreui.theme.PineTheme
-import com.maximapps.pine.navigation.MainScreenDestinationFactory
-import com.maximapps.pine.navigation.SettingsScreenDestinationFactory
 import com.madfrog.navigation.accompanist.AccompanistNavHost
-import com.maximapps.pine.navigation.Destinations
+import com.madfrog.navigation.toDestination
+import com.maximapps.main.navigation.MainScreenDestinationFactory
+import com.maximapps.settings.navigation.SettingsScreenDestinationFactory
 
 class MainActivity : ComponentActivity() {
     private val factories = setOf(
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PineTheme {
-                AccompanistNavHost(Destinations.mainScreen, factories)
+                AccompanistNavHost("main".toDestination(), factories)
             }
         }
     }

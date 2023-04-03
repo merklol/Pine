@@ -23,7 +23,7 @@ class ObserveSessionEventsUseCase(
             it.updateRemainingTime(timerEvents.value)
         }
         is TimerEvents.Stopped -> sessionRepository.update {
-            phases.getValue(it.determinePhase()).proceed(it)
+            phases.getValue(it.determineNextPhase()).proceed(it)
         }
         else -> {
             //Idle state
