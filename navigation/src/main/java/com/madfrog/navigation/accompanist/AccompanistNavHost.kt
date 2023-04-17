@@ -18,15 +18,13 @@ fun AccompanistNavHost(
     destinations: Set<NavigationDestinationFactory>
 ) {
     val navController = rememberAnimatedNavController()
-    val navigationGraph = remember { NavigationGraph() }
 
     CompositionLocalProvider(
         LocalRouter provides remember { JetpackNavigationRouter(navController) }
     ) {
         val router = LocalRouter.current
         AnimatedNavHost(navController, startDestination.value) {
-            navigationGraph.initialize(this)
-            destinations.forEach { it.create(navigationGraph, router) }
+            destinations.forEach { it.create(NavigationGraph(this), router) }
         }
     }
 }

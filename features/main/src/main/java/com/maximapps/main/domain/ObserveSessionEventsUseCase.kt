@@ -6,12 +6,14 @@ import com.maximapps.main.domain.phases.PhaseType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
+//TODO: Split to interface and implementation to use @Binds instead of @Provide
 class ObserveSessionEventsUseCase(
-    private val pineTimerRepository: PineTimerRepository = PineTimerRepositoryImpl,
-    private val sessionRepository: SessionRepository = SessionRepositoryImpl,
-    private val phases: Map<PhaseType, Phase> = SessionPhases
+    private val pineTimerRepository: PineTimerRepository,
+    private val sessionRepository: SessionRepository,
+    private val phases: Map<PhaseType, Phase>
 ) {
 
     fun observe() = pineTimerRepository.observeTimerEvents()

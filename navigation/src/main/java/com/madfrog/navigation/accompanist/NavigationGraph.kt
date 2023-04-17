@@ -10,12 +10,8 @@ import com.google.accompanist.navigation.animation.composable
 import com.madfrog.navigation.Argument
 import com.madfrog.navigation.Destination
 
-class NavigationGraph {
-    private lateinit var navGraphBuilder: NavGraphBuilder
-
-    internal fun initialize(navGraphBuilder: NavGraphBuilder) {
-        this.navGraphBuilder = navGraphBuilder
-    }
+@JvmInline
+value class NavigationGraph(private val navGraphBuilder: NavGraphBuilder) {
 
     fun addDestination(
         destination: Destination,

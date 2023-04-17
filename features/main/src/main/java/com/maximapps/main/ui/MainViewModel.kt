@@ -8,11 +8,11 @@ import com.maximapps.main.domain.Session
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-
-class MainViewModel(
-    private val manageSessionUseCase: ManageSessionUseCase = ManageSessionUseCase(),
-    observeSessionEventsUseCase: ObserveSessionEventsUseCase = ObserveSessionEventsUseCase()
+class MainViewModel @Inject constructor(
+    private val manageSessionUseCase: ManageSessionUseCase,
+    observeSessionEventsUseCase: ObserveSessionEventsUseCase
 ) : ViewModel() {
 
     val screenState = MutableStateFlow(Session())
