@@ -2,6 +2,6 @@ package com.madfrog.navigation
 
 import com.madfrog.navigation.accompanist.NavigationGraph
 
-fun interface NavigationDestinationFactory {
+fun interface NavigationDestination {
     fun create(navigationGraph: NavigationGraph, router: Router)
 }
