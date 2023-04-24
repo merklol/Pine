@@ -1,4 +1,4 @@
-package com.maximapps.settings.di
+package com.maximapps.settings.di.modules
 
 import dagger.Module
 

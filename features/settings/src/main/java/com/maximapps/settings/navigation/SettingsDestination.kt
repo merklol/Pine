@@ -1,21 +1,25 @@
 package com.maximapps.settings.navigation
 
 import com.madfrog.core.di.Inject
+import com.madfrog.core.di.component
 import com.madfrog.navigation.NavigationDestinationFactory
 import com.madfrog.navigation.Router
 import com.madfrog.navigation.accompanist.NavigationGraph
-import com.maximapps.settings.di.SettingsComponentHolder
+import com.maximapps.settings.di.SettingsComponent
+import com.maximapps.settings.di.SettingsComponentFactory
+import com.maximapps.settings.di.SettingsDependencies
 import com.maximapps.settings.ui.SettingsScreen
+import javax.inject.Inject
 
-class SettingsScreenDestinationFactory : NavigationDestinationFactory {
+class SettingsDestinationFactory @Inject constructor() : NavigationDestinationFactory {
     override fun create(navigationGraph: NavigationGraph, router: Router) {
-        SettingsComponentHolder.init()
-
         navigationGraph.addDestination(
             destination = Destinations.settingsScreen,
             transitions = SettingsScreenTransitions()
         ) {
-            Inject(SettingsComponentHolder.viewModelFactoryProvider.get()) {
+            val component: SettingsComponent =
+                component(SettingsComponentFactory(object : SettingsDependencies {}))
+            Inject(component.viewModelFactory) {
                 SettingsScreen("Settings")
             }
         }

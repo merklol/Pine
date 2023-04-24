@@ -1,11 +1,11 @@
-package com.maximapps.main.di
+package com.maximapps.main.di.modules
 
+import com.madfrog.core.usersettings.UserSettings
 import com.maximapps.main.data.PineCountdownTimer
 import com.maximapps.main.domain.ManageSessionUseCase
 import com.maximapps.main.domain.ObserveSessionEventsUseCase
 import com.maximapps.main.domain.PineTimerRepository
 import com.maximapps.main.domain.SessionRepository
-import com.maximapps.main.domain.UserSettings
 import com.maximapps.main.domain.phases.BreakPhase
 import com.maximapps.main.domain.phases.FocusSessionPhase
 import com.maximapps.main.domain.phases.LongBreakPhase
@@ -40,11 +40,6 @@ object MainModule {
     //TODO: should be custom scope and replaced with @Binds
     @Singleton
     fun providePineCountdownTimer(): PineCountdownTimer = PineCountdownTimer()
-
-    @Provides
-    //TODO: should be custom scope and replaced with @Binds
-    @Singleton
-    fun provideUserSettings(): UserSettings = UserSettings()
 
     @Provides
     //TODO: should be custom scope and replaced with @Binds

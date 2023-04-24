@@ -8,10 +8,10 @@ fun interface ViewModelFactoryProvider {
     fun get(): ViewModelFactory
 }
 
-interface ComponentHolder {
+//TODO: Consider to convert it to ComponentContext/Context, ComponentState
+interface Module {
     val viewModelFactoryProvider: ViewModelFactoryProvider
-    fun init()
-    fun reset()
+    fun create(): Module
 }
 
 @Composable

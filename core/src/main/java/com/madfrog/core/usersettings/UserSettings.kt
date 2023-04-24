@@ -1,4 +1,4 @@
-package com.maximapps.main.domain
+package com.madfrog.core.usersettings
 
 class UserSettings(
     val longBreakDuration: Long = 8000,

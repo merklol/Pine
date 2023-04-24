@@ -1,27 +1,29 @@
 package com.maximapps.main.navigation
 
-import androidx.compose.runtime.remember
 import com.madfrog.core.di.Inject
+import com.madfrog.core.di.component
 import com.madfrog.navigation.NavigationCommand
 import com.madfrog.navigation.NavigationDestinationFactory
 import com.madfrog.navigation.Router
 import com.madfrog.navigation.accompanist.NavigationGraph
 import com.madfrog.navigation.toRoute
-import com.maximapps.main.di.MainComponentHolder
+import com.maximapps.main.di.MainComponent
+import com.maximapps.main.di.MainComponentFactory
+import com.maximapps.main.di.MainDependencies
 import com.maximapps.main.ui.MainScreen
+import javax.inject.Inject
 
-class MainScreenDestinationFactory : NavigationDestinationFactory {
+class MainDestinationFactory @Inject constructor(
+    private val dependencies: MainDependencies
+) : NavigationDestinationFactory {
     override fun create(navigationGraph: NavigationGraph, router: Router) {
         navigationGraph.addDestination(
             destination = Destinations.mainScreen,
             transitions = ScreenTransitions(),
             popTransitions = ScreenPopTransitions()
         ) {
-            val factory = remember {
-                MainComponentHolder.init()
-                MainComponentHolder.viewModelFactoryProvider.get()
-            }
-            Inject(factory) {
+            val component: MainComponent = component(MainComponentFactory(dependencies))
+            Inject(component.viewModelFactory) {
                 MainScreen {
                     router.navigate(NavigationCommand("settings".toRoute()))
                 }
