@@ -3,23 +3,33 @@ package com.maximapps.pine
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import com.madfrog.core.di.ComponentStore
+import com.madfrog.core.di.LocalComponentStore
+import com.madfrog.navigation.NavigationDestination
 import com.maximapps.coreui.theme.PineTheme
 import com.madfrog.navigation.accompanist.AccompanistNavHost
 import com.madfrog.navigation.toDestination
-import com.maximapps.main.navigation.MainScreenDestinationFactory
-import com.maximapps.settings.navigation.SettingsScreenDestinationFactory
+import com.maximapps.pine.di.DaggerAppComponent
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-    private val factories = setOf(
-        MainScreenDestinationFactory(),
-        SettingsScreenDestinationFactory()
-    )
+    @Inject
+    lateinit var factories: Set<@JvmSuppressWildcards NavigationDestination>
+
+    @Inject
+    lateinit var componentStore: ComponentStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerAppComponent.builder().build().inject(this)
+
         setContent {
             PineTheme {
-                AccompanistNavHost("main".toDestination(), factories)
+                //TODO: Refactor it
+                CompositionLocalProvider(LocalComponentStore provides componentStore) {
+                    AccompanistNavHost("main".toDestination(), factories)
+                }
             }
         }
     }
