@@ -1,16 +1,27 @@
 package com.maximapps.main.di
 
+import android.util.Log
+import com.madfrog.core.di.Component
 import com.madfrog.core.di.ViewModelFactory
-import dagger.Component
+import com.maximapps.main.di.modules.MainModule
+import com.maximapps.main.di.modules.ViewModelsModule
 import javax.inject.Singleton
 
-@Component(
+@dagger.Component(
+    dependencies = [MainDependencies::class],
     modules = [
         MainModule::class,
-        ViewModelFactoryModule::class
+        ViewModelsModule::class
     ]
 )
 @Singleton
-interface MainComponent {
-    val viewModelFactory: ViewModelFactory
+interface MainComponent : Component {
+    override val viewModelFactory: ViewModelFactory
+
+    companion object {
+        fun create(dependencies: MainDependencies): MainComponent =
+            DaggerMainComponent.builder().mainDependencies(dependencies).build().also {
+                Log.e("INIT", "1")
+            }
+    }
 }

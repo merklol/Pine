@@ -17,7 +17,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +38,6 @@ import com.maximapps.coreui.theme.Grey300
 import com.maximapps.coreui.theme.Grey400
 import com.maximapps.coreui.theme.Grey500
 import com.maximapps.main.R
-import com.maximapps.main.di.MainComponentHolder
 import com.maximapps.main.domain.phases.PhaseType
 import com.maximapps.main.ui.views.ClockFaceDefaults
 import com.maximapps.main.ui.views.CountdownTimer
