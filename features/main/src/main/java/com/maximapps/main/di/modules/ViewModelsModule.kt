@@ -1,4 +1,4 @@
-package com.maximapps.main.di
+package com.maximapps.main.di.modules
 
 import androidx.lifecycle.ViewModel
 import com.madfrog.core.di.ViewModelKey
