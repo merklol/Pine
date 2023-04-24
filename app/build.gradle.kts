@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     implementation(project(":core-ui"))
+    implementation(project(":core"))
     implementation(project(":navigation"))
     implementation(project(":features:main"))
     implementation(project(":features:settings"))
