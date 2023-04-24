@@ -1,6 +1,7 @@
 package com.madfrog.core.di
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -31,6 +32,14 @@ class ViewModelFactory @Inject constructor(
     }
 }
 
+@Composable
+fun Inject(viewModelFactory: ViewModelProvider.Factory, content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+        LocalViewModelFactory provides viewModelFactory,
+        content = content
+    )
+}
+
 //TODO: ADD docs
 @Composable
 inline fun <reified T : ViewModel> daggerViewModel(): T =
@@ -40,4 +49,9 @@ inline fun <reified T : ViewModel> daggerViewModel(): T =
 //TODO: ADD docs
 val LocalViewModelFactory = compositionLocalOf<ViewModelProvider.Factory>() {
     error("No ViewModelFactory was provided via LocalViewModelFactory")
+}
+
+//TODO: ADD docs
+val LocalComponentStore = compositionLocalOf<ComponentStore>() {
+    error("No Component was provided via ComponentStore")
 }

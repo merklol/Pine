@@ -1,26 +1,20 @@
 package com.madfrog.core.di
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.lifecycle.ViewModelProvider
 
-fun interface ViewModelFactoryProvider {
-    fun get(): ViewModelFactory
-}
-
-//TODO: Consider to convert it to ComponentContext/Context, ComponentState
-interface Module {
-    val viewModelFactoryProvider: ViewModelFactoryProvider
-    fun create(): Module
-}
+interface Component : Context
 
 @Composable
-fun Inject(
-    viewModelFactory: ViewModelProvider.Factory,
-    content: @Composable () -> Unit
-) {
-    CompositionLocalProvider(
-        LocalViewModelFactory provides viewModelFactory,
-        content = content
-    )
+inline fun <reified T : Component> component(defaultValue: () -> T): T {
+    val store = LocalComponentStore.current
+    val key = getKey(T::class.java)
+    val component = store[key]
+
+    return when {
+        T::class.isInstance(component) -> component as T
+        else -> defaultValue().also { store[key] = it }
+    }
 }
+
+fun <T> getKey(clazz: Class<T>) =
+    requireNotNull(clazz.canonicalName) { "Local and anonymous classes can not be Components" }
