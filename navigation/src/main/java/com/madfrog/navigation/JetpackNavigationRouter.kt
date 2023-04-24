@@ -4,7 +4,8 @@ import androidx.navigation.NavController
 
 private const val Separator = "/"
 
-internal class JetpackNavigationRouter(private val navController: NavController) : Router {
+@JvmInline
+internal value class JetpackNavigationRouter(private val navController: NavController) : Router {
 
     override fun navigate(navigationCommand: NavigationCommand) {
         if (navigationCommand.arguments.isNotEmpty()) {
