@@ -6,7 +6,6 @@ import com.madfrog.navigation.NavigationCommand
 import com.madfrog.navigation.NavigationDestination
 import com.madfrog.navigation.Router
 import com.madfrog.navigation.accompanist.NavigationGraph
-import com.madfrog.navigation.toRoute
 import com.maximapps.main.di.MainComponent
 import com.maximapps.main.di.MainDependencies
 import com.maximapps.main.ui.MainScreen
@@ -17,14 +16,15 @@ class MainDestination @Inject constructor(
 ) : NavigationDestination {
     override fun create(navigationGraph: NavigationGraph, router: Router) {
         navigationGraph.addDestination(
-            destination = Destinations.mainScreen,
+            route = MainRoute,
+            deepLinks = listOf(MainDeepLink),
             transitions = ScreenTransitions(),
             popTransitions = ScreenPopTransitions()
         ) {
             val component: MainComponent = component { MainComponent.create(dependencies) }
             Inject(component.viewModelFactory) {
                 MainScreen {
-                    router.navigate(NavigationCommand("settings".toRoute()))
+                    router.navigate(NavigationCommand(SettingsRoute))
                 }
             }
         }
