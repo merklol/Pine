@@ -1,6 +1,5 @@
 package com.maximapps.main.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximapps.main.domain.ManageSessionUseCase
@@ -30,10 +29,5 @@ class MainViewModel @Inject constructor(
 
     fun stopSession() {
         manageSessionUseCase.stopSession()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.e("CLEAR", "1")
     }
 }

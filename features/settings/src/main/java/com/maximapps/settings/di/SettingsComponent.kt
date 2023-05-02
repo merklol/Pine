@@ -1,6 +1,5 @@
 package com.maximapps.settings.di
 
-import android.util.Log
 import com.madfrog.core.di.Component
 import com.madfrog.core.di.ViewModelFactory
 import com.maximapps.settings.di.modules.SettingsModule
@@ -20,8 +19,6 @@ interface SettingsComponent : Component {
 
     companion object {
         fun create(dependencies: SettingsDependencies): SettingsComponent =
-            DaggerSettingsComponent.builder().settingsDependencies(dependencies).build().also {
-                Log.e("INIT", "2")
-            }
+            DaggerSettingsComponent.builder().settingsDependencies(dependencies).build()
     }
 }
