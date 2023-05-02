@@ -3,40 +3,31 @@ package com.maximapps.pine
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.maximapps.pine.ui.theme.PineTheme
+import com.madfrog.core.di.ComponentStore
+import com.madfrog.core.di.ComponentStoreProvider
+import com.madfrog.navigation.NavigationDestination
+import com.maximapps.coreui.theme.PineTheme
+import com.madfrog.navigation.accompanist.AccompanistNavHost
+import com.maximapps.main.navigation.MainRoute
+import com.maximapps.pine.di.DaggerAppComponent
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            PineTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting()
-                }
+        DaggerAppComponent.builder().build().inject(this)
+    }
+
+    @Inject
+    fun setContentView(
+        store: ComponentStore,
+        destinations: Set<@JvmSuppressWildcards NavigationDestination>
+    ) = setContent {
+        PineTheme {
+            ComponentStoreProvider(store) {
+                AccompanistNavHost(MainRoute, destinations)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting() {
-    Text(text = "Pine - Focus Timer")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PineTheme {
-        Greeting()
     }
 }

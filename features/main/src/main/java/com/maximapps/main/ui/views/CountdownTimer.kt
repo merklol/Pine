@@ -3,6 +3,7 @@ package com.maximapps.main.ui.views
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -11,7 +12,6 @@ import java.util.Calendar
 
 @Composable
 fun CountdownTimer(
-    calendar: Calendar,
     remainingTime: Long,
     isRunning: Boolean,
     progress: Float,
@@ -21,7 +21,7 @@ fun CountdownTimer(
     Box {
         ClockFace(
             modifier = Modifier.align(Alignment.Center),
-            calendar = calendar,
+            calendar = remember { Calendar.getInstance() },
             colors = clockFaceColors,
             transition = rememberInfiniteTransition()
         )

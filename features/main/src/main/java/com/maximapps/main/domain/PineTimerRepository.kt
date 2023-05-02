@@ -1,5 +1,6 @@
 package com.maximapps.main.domain
 
+import com.madfrog.core.usersettings.UserSettings
 import com.maximapps.main.data.PineCountdownTimer
 import com.maximapps.main.data.TimerEvents
 import kotlinx.coroutines.flow.Flow

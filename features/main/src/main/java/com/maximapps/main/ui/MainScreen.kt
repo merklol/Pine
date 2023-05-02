@@ -18,16 +18,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.madfrog.core.di.daggerViewModel
 import com.maximapps.coreui.buttons.LargeButton
 import com.maximapps.coreui.theme.DarkGrey500
 import com.maximapps.coreui.theme.Green200
@@ -37,53 +37,51 @@ import com.maximapps.coreui.theme.Green800
 import com.maximapps.coreui.theme.Grey300
 import com.maximapps.coreui.theme.Grey400
 import com.maximapps.coreui.theme.Grey500
-import com.maximapps.main.CountdownTimerState
 import com.maximapps.main.R
-import com.maximapps.main.TimerState
+import com.maximapps.main.domain.phases.PhaseType
 import com.maximapps.main.ui.views.ClockFaceDefaults
 import com.maximapps.main.ui.views.CountdownTimer
 import com.maximapps.main.ui.views.CurrentDateView
 import com.maximapps.main.ui.views.MessageBar
 import com.maximapps.main.ui.views.progressindicators.StepProgressIndicator
 import com.maximapps.main.ui.views.progressindicators.animateProgressAsState
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
+
+private const val AnimationTime = 60000L
 
 @Composable
 fun MainScreen(
-    calendar: Calendar,
-    timerState: TimerState,
-    uiController: SystemUiController,
-    onTimerButtonClick: () -> Unit
+    viewModel: MainViewModel = daggerViewModel(),
+    onSettingsButtonClick: () -> Unit
 ) {
-    val (countdownState, remainingTime, totalTime, currentStep) = timerState
+    val uiController = rememberSystemUiController()
 
-    val animatedCountdownProgress by animateProgressAsState(remainingTime, totalTime)
+    val state by viewModel.screenState.collectAsState()
+    val animatedCountdownProgress by animateProgressAsState(state.remainingTime, AnimationTime)
 
     val systemBarsColor by animateColorAsState(
-        targetValue = when (countdownState) {
-            CountdownTimerState.ShortBreak, CountdownTimerState.LongBreak -> DarkGrey500
+        targetValue = when (state.phase) {
+            PhaseType.ShortBreak, PhaseType.LongBreak -> DarkGrey500
             else -> Green800
         }
     )
     val backgroundColor by animateColorAsState(
-        targetValue = when (countdownState) {
-            CountdownTimerState.ShortBreak, CountdownTimerState.LongBreak -> Grey400
+        targetValue = when (state.phase) {
+            PhaseType.ShortBreak, PhaseType.LongBreak -> Grey400
             else -> Green600
         }
     )
 
     val bezelColor by animateColorAsState(
-        targetValue = when (countdownState) {
-            CountdownTimerState.ShortBreak, CountdownTimerState.LongBreak -> Grey300
+        targetValue = when (state.phase) {
+            PhaseType.ShortBreak, PhaseType.LongBreak -> Grey300
             else -> Green200
         }
     )
 
     val dateViewBackgroundColor by animateColorAsState(
-        targetValue = when (countdownState) {
-            CountdownTimerState.ShortBreak, CountdownTimerState.LongBreak -> Grey500
+        targetValue = when (state.phase) {
+            PhaseType.ShortBreak, PhaseType.LongBreak -> Grey500
             else -> Green700
         }
     )
@@ -94,58 +92,64 @@ fun MainScreen(
 
     Scaffold(
         backgroundColor = backgroundColor,
-        topBar = { MainTopBar(dateViewBackgroundColor) },
+        topBar = { MainTopBar(dateViewBackgroundColor, onSettingsButtonClick) },
         bottomBar = { MainBottomBar() }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             MessageBar(
-                message = when(countdownState) {
-                    CountdownTimerState.ShortBreak -> "Take a short break!"
-                    CountdownTimerState.LongBreak -> "Take a long break!"
-                    CountdownTimerState.Work -> stringResource(id = R.string.current_work_msg, currentStep + 1)
+                message = when(state.phase) {
+                    PhaseType.ShortBreak -> "Take a short break!"
+                    PhaseType.LongBreak -> "Take a long break!"
+                    PhaseType.FocusSession -> stringResource(id = R.string.current_work_msg, state.currentInterval + 1)
                     else -> ""
                 },
-                isVisible = timerState.isActiveSession()
+                isVisible = state.phase.isActiveSession()
             )
             CountdownTimer(
-                calendar = calendar,
-                isRunning = timerState.isActiveSession(),
-                remainingTime = remainingTime,
+                isRunning = state.phase.isActiveSession(),
+                remainingTime = state.remainingTime,
                 clockFaceColors = ClockFaceDefaults.ClockFaceColors.copy(bezelColor = bezelColor),
                 progress = animatedCountdownProgress,
-                alpha = if (timerState.countdownTimerState != CountdownTimerState.Idle) 1f else 0f
+                alpha = if (state.phase != PhaseType.Idle) 1f else 0f
             )
             Spacer(modifier = Modifier.height(22.dp))
             StepProgressIndicator(
-                step = currentStep,
+                step = state.currentInterval,
                 totalSteps = 4
             )
             Spacer(modifier = Modifier.height(22.dp))
             LargeButton(
                 modifier = Modifier.width(132.dp),
-                text = if (timerState.isActiveSession())
-                    "Give Up".uppercase(Locale.getDefault())
-                else "Start".uppercase(Locale.getDefault()), onClick = onTimerButtonClick
+                text = if (state.phase.isActiveSession()) "Give Up" else "Start",
+                onClick = {
+                    if (state.phase == PhaseType.Idle) {
+                        viewModel.startSession()
+                    } else {
+                        viewModel.stopSession()
+                    }
+                }
             )
         }
     }
 }
 
-private fun TimerState.isActiveSession() = this.countdownTimerState != CountdownTimerState.Idle
+private fun PhaseType.isActiveSession() = this != PhaseType.Idle
 
 @Composable
-fun MainTopBar(dateViewBackgroundColor: Color) {
+fun MainTopBar(dateViewBackgroundColor: Color, onSettingsButtonClick: () -> Unit) {
     Box(Modifier.fillMaxWidth()) {
         CurrentDateView(
             date = Date(),
             backgroundColor = dateViewBackgroundColor,
             modifier = Modifier.align(Alignment.Center)
         )
-        IconButton(modifier = Modifier.align(Alignment.CenterEnd), onClick = { }) {
+        IconButton(modifier = Modifier.align(Alignment.CenterEnd), onClick = onSettingsButtonClick) {
             Icon(
                 imageVector = Icons.Filled.Settings,
                 contentDescription = stringResource(id = R.string.settings_btn),
@@ -166,18 +170,4 @@ fun MainBottomBar() {
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun MainScreenPreview() {
-    MainScreen(
-        calendar = Calendar.getInstance(),
-        uiController = rememberSystemUiController(),
-        timerState = TimerState(
-            remainingTime = 3000L,
-            totalTime = 5000L,
-            currentStep = 1
-        )
-    ) { }
 }
