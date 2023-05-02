@@ -7,13 +7,7 @@ interface Component : Context
 @Composable
 inline fun <reified T : Component> component(defaultValue: () -> T): T {
     val store = LocalComponentStore.current
-    val key = getKey(T::class.java)
-    val component = store[key]
-
-    return when {
-        T::class.isInstance(component) -> component as T
-        else -> defaultValue().also { store[key] = it }
-    }
+    return store.getOrElse { defaultValue().also { store[getKey(T::class.java)] = it } }
 }
 
 fun <T> getKey(clazz: Class<T>) =

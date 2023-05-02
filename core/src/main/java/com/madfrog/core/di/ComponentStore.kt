@@ -1,5 +1,9 @@
 package com.madfrog.core.di
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+
 //TODO: Update docs
 /**
  * Class to store `LibraryComponent`s.
@@ -21,9 +25,24 @@ class ComponentStore {
         map[key] = component
     }
 
-    fun destroy(key: String) {
+    fun remove(key: String) {
         map.remove(key)
     }
 }
 
-inline fun <reified T : Component> ComponentStore.destroy() = destroy(getKey(T::class.java))
+inline fun <reified T : Component> ComponentStore.remove() = remove(getKey(T::class.java))
+
+inline fun <reified T : Component> ComponentStore.getOrElse(defaultValue: () -> T): T =
+    with(this[getKey(T::class.java)]) {
+        if(T::class.isInstance(this)) this as T else defaultValue()
+    }
+
+@Composable
+fun ComponentStoreProvider(store: ComponentStore, content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalComponentStore provides store, content = content)
+}
+
+//TODO: ADD docs
+val LocalComponentStore = compositionLocalOf<ComponentStore>() {
+    error("No Component was provided via ComponentStore")
+}

@@ -1,6 +1,5 @@
 package com.maximapps.main.di
 
-import android.util.Log
 import com.madfrog.core.di.Component
 import com.madfrog.core.di.ViewModelFactory
 import com.maximapps.main.di.modules.MainModule
@@ -20,8 +19,6 @@ interface MainComponent : Component {
 
     companion object {
         fun create(dependencies: MainDependencies): MainComponent =
-            DaggerMainComponent.builder().mainDependencies(dependencies).build().also {
-                Log.e("INIT", "1")
-            }
+            DaggerMainComponent.builder().mainDependencies(dependencies).build()
     }
 }

@@ -1,7 +1,10 @@
 package com.maximapps.pine.di
 
 import com.madfrog.core.di.ComponentStore
+import com.madfrog.core.di.ViewModelFactory
+import com.madfrog.core.di.getOrElse
 import com.madfrog.core.usersettings.UserSettings
+import com.maximapps.main.di.MainComponent
 import com.maximapps.main.di.MainDependencies
 import com.maximapps.settings.di.SettingsDependencies
 import dagger.Module
