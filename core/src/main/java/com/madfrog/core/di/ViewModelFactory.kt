@@ -50,8 +50,3 @@ inline fun <reified T : ViewModel> daggerViewModel(): T =
 val LocalViewModelFactory = compositionLocalOf<ViewModelProvider.Factory>() {
     error("No ViewModelFactory was provided via LocalViewModelFactory")
 }
-
-//TODO: ADD docs
-val LocalComponentStore = compositionLocalOf<ComponentStore>() {
-    error("No Component was provided via ComponentStore")
-}
