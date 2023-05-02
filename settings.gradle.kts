@@ -19,6 +19,7 @@ include(
     ":features:main",
     ":features:settings",
     ":features:statistics",
+    ":core",
     ":core-ui",
     ":navigation"
 )

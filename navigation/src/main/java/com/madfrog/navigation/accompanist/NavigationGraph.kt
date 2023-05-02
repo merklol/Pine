@@ -8,25 +8,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.madfrog.navigation.Argument
-import com.madfrog.navigation.Destination
+import com.madfrog.navigation.DeepLink
+import com.madfrog.navigation.Route
+import com.madfrog.navigation.toNavDeepLink
 
-class NavigationGraph {
-    private lateinit var navGraphBuilder: NavGraphBuilder
-
-    internal fun initialize(navGraphBuilder: NavGraphBuilder) {
-        this.navGraphBuilder = navGraphBuilder
-    }
+@JvmInline
+value class NavigationGraph(private val navGraphBuilder: NavGraphBuilder) {
 
     fun addDestination(
-        destination: Destination,
+        route: Route,
         arguments: List<Argument> = emptyList(),
+        deepLinks: List<DeepLink> = emptyList(),
         transitions: AccompanistTransitions = EmptyTransitions,
         popTransitions: AccompanistTransitions = EmptyTransitions,
         content: @Composable (Bundle?) -> Unit
     ) {
         navGraphBuilder.composable(
-            route = destination.value,
+            route = route.toString(),
             arguments.map(Argument::toNavNamedNavArgument),
+            deepLinks.map(DeepLink::toNavDeepLink),
             enterTransition = { transitions.enterTransition.determine(this) },
             exitTransition = { transitions.exitTransition.determine(this) },
             popEnterTransition = { popTransitions.enterTransition.determine(this) },

@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.madfrog.core.di.daggerViewModel
 import com.maximapps.coreui.buttons.LargeButton
 import com.maximapps.coreui.theme.DarkGrey500
 import com.maximapps.coreui.theme.Green200
@@ -51,7 +51,7 @@ private const val AnimationTime = 60000L
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = remember { MainViewModel() },
+    viewModel: MainViewModel = daggerViewModel(),
     onSettingsButtonClick: () -> Unit
 ) {
     val uiController = rememberSystemUiController()
