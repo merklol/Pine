@@ -1,6 +1,5 @@
 package com.madfrog.navigation
 
-@JvmInline
-value class Route(internal val value: String)
-
-fun String.toRoute() = Route(this)
+abstract class Route(private val value: String) {
+    override fun toString(): String = value
+}

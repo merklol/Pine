@@ -15,7 +15,7 @@ class SettingsDestination @Inject constructor(
 ) : NavigationDestination {
     override fun create(navigationGraph: NavigationGraph, router: Router) {
         navigationGraph.addDestination(
-            destination = Destinations.settingsScreen,
+            route = SettingsRoute,
             transitions = SettingsScreenTransitions()
         ) {
             val component: SettingsComponent = component { SettingsComponent.create(dependencies) }
